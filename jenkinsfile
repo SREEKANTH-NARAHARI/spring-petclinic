@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    tools {
+        // Ensure Gradle and JDK are configured in Jenkins
+        gradle 'gradle' // Adjust version to match your environment
+        jdk 'jdk'        // Adjust JDK version as needed
+    }
+
+    environment {
+        // Example: Define environment variables if required
+        GRADLE_OPTS = "-Dorg.gradle.daemon=false"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Fetch the source code from the SCM
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project using Gradle
+                sh './gradlew clean build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests with Gradle
+                sh './gradlew test'
+            }
+        }
+}
